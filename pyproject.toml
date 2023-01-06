@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "api-python"
+version = "0.1.0"
+description = "My First API"
+authors = ["Rodrigo Becker <rodrigo.beckermore@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.88.0"
+uvicorn = "^0.20.0"
+safety = "^2.3.5"
+mkdocs-material = "^9.0.2"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
