@@ -1,23 +1,24 @@
 from typing import Any
 
 from fastapi import status
-from fastapi_utils.inferring_router import InferringRouter
 from fastapi_utils.cbv import cbv
+from fastapi_utils.inferring_router import InferringRouter
 from starlette.status import HTTP_201_CREATED, HTTP_202_ACCEPTED
-from app.interfaces.users import (
-    UsersOutput,
-    UserCreateOutput,
-    UserCreateInput,
-    UserDeletedOutput,
-)
-from app.interfaces.commons import APIBadRequest, APIForbidden
+from starlette.types import Message
 
+from app.interfaces.commons import APIBadRequest, APIForbidden
+from app.interfaces.users import (UserCreateInput, UserCreateOutput,
+                                  UserDeletedOutput, UsersOutput)
+from app.services.service_users import UseCaseServiceUsers
 
 router = InferringRouter()
 
 
 @cbv(router)
 class UserController:
+    def __init__(self) -> None:
+        self.__service = UseCaseServiceUsers()
+
     @router.get(
         path="/user",
         responses={
@@ -30,7 +31,7 @@ class UserController:
         },
     )
     async def get_user(self) -> Any:
-        return {}
+        return self.__service.get_users()
 
     @router.post(
         "/user",
@@ -41,7 +42,8 @@ class UserController:
         },
     )
     async def insert_user(self, payload: UserCreateInput) -> Any:
-        return {}
+        self.__service.insert_user(user=payload)
+        return UserCreateOutput(message="User created successul!").dict()
 
     @router.delete(
         "/user/{id_user}",

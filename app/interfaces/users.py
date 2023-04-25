@@ -1,4 +1,6 @@
-from pydantic import BaseModel
+from typing import List
+
+from pydantic import BaseModel, Field
 
 
 class UsersOutput(BaseModel):
@@ -10,6 +12,10 @@ class UsersOutput(BaseModel):
     birthdate: str
     mother_name: str
     email: str
+
+
+class UsersListOutPut(BaseModel):
+    users: List[UsersOutput] = Field(default_factory=list)
 
 
 class UserCreateInput(BaseModel):
